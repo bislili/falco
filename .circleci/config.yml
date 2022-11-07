@@ -8,6 +8,13 @@ jobs:
     steps:
       - checkout:
           path: /tmp/source-arm64/falco
+
+      - run:
+          name: Install deps ⛓️
+          command: |
+            sudo apt update -y
+            sudo apt install -y --no-install-recommends ca-certificates tree
+
       - run:
           name: Prepare project
           command: |
@@ -40,6 +47,13 @@ jobs:
             cp /tmp/build-arm64/release/*.deb /tmp/packages
             cp /tmp/build-arm64/release/*.tar.gz /tmp/packages
             cp /tmp/build-arm64/release/*.rpm /tmp/packages
+
+      - run:
+          name: Show tree 🌴
+          command: |
+            tree /tmp/source-arm64
+            tree /tmp/build-arm64/release
+
       - store_artifacts:
           path: /tmp/packages
           destination: /packages
@@ -106,6 +120,13 @@ jobs:
     steps:
       - checkout:
           path: /source/falco
+
+      - run:
+          name: Install deps ⛓️
+          command: |
+            yum update -y
+            yum install -y tree
+
       - run:
           name: Prepare project
           command: /usr/bin/entrypoint cmake
@@ -123,6 +144,13 @@ jobs:
           paths:
             - build/release
             - source
+
+      - run:
+          name: Show tree 🌴
+          command: |
+            tree /source
+            tree /build/release
+
       - run:
           name: Prepare artifacts
           command: |
